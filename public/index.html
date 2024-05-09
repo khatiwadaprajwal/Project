@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #msg-container {
+            flex-grow: 1;
+            overflow-y: auto; /* Enable vertical scrolling for messages */
+            display: flex;
+            flex-direction: column-reverse; /* Reverse direction of messages */
+        }
+
+        #msg {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f0f0f0;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        #send-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="msg-container"> <!-- Container for messages -->
+        <div id="msg"></div> <!-- Actual messages will be appended here -->
+    </div>
+    <form id="form" action="">
+        <input id="input" autocomplete="off" / ><button id="send-button">Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        var msgContainer = document.getElementById('msg');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', function(msg) {
+            var item = document.createElement('li');
+            item.textContent = msg;
+            msgContainer.appendChild(item); // Append message to the bottom of the container
+            window.scrollTo(0, document.body.scrollHeight); // Scroll to the bottom of the page
+            
+        });
+    </script>
+</body>
+</html>
