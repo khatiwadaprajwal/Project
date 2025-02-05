@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const dbUrl = "mongodb://127.0.0.1:27017/test1";
+const dbUrl = "mongodb://127.0.0.1:27017/collegeproject";
 mongoose.connect(dbUrl, {
     autoIndex: true,
     autoCreate: true
